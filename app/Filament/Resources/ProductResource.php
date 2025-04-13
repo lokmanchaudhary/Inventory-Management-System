@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SubCategoryResource\Pages;
-use App\Filament\Resources\SubCategoryResource\RelationManagers;
-use App\Models\SubCategory;
+use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,18 +14,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
-class SubCategoryResource extends Resource
+class ProductResource extends Resource
 {
-    protected static ?string $model = SubCategory::class;
-    protected static ?string $navigationIcon = 'heroicon-o-folder-open';
+    protected static ?string $model = Product::class;
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
     protected static ?string $navigationGroup = 'Products Management';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make("title")
+                Forms\Components\TextInput::make('title')
                     ->label('SubCategory Title')
                     ->required()
                     ->maxLength(255)
@@ -33,30 +33,44 @@ class SubCategoryResource extends Resource
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
 
                 Forms\Components\TextInput::make('slug')
+                    ->required()
                     ->hint('URL resource')
                     ->hintIcon('heroicon-o-globe-alt')
                     ->hintColor('secondary')
-                    ->required()
                     ->lazy()
                     ->rule('regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/')
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state)))
-                    ->unique(SubCategory::class, 'slug', fn ($record) => $record, ignoreRecord: true),
+                    ->unique(Product::class, 'slug', fn ($record) => $record, ignoreRecord: true),
 
-                Forms\Components\Select::make('category_id')
-                    ->label('Parent Category')
-                    ->relationship('category', 'title', function ($query) {
-                        $query->orderBy('sequence', 'asc');
-                    })
-                    ->preload()
-                    ->allowHtml()
+                Forms\Components\TextInput::make('quantity')
+                    ->required()
+                    ->minValue(0)
+                    ->numeric(),
+
+                Forms\Components\DatePicker::make('date_of_manufacture')
                     ->required(),
 
+                Forms\Components\DatePicker::make('date_of_expiry')
+                    ->required(),
+
+                Forms\Components\TextInput::make('base_price')
+                    ->required()
+                    ->numeric()
+                    ->minValue(0)
+                    ->prefix('रु'),
+
+                Forms\Components\TextInput::make('display_price')
+                    ->required()
+                    ->numeric()
+                    ->minValue(0)
+                    ->prefix('रु'),
+
                 Forms\Components\Toggle::make('status')
-                    ->label('Make Visible ?')
+                    ->required()
+                    ->label('Visible to customers.')
                     ->default(true)
                     ->onColor('success')
-                    ->offColor('danger')->columnSpanFull(),
-
+                    ->offColor('danger'),
             ]);
     }
 
@@ -65,22 +79,37 @@ class SubCategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('SubCategory Title')
                     ->searchable()
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('slug')
-                    ->badge()
                     ->searchable()
                     ->alignCenter(),
 
-                Tables\Columns\TextColumn::make('category.title')
-                    ->label('Parent Category')
-                    ->icon('heroicon-o-rectangle-group')
-                    ->badge()
-                    ->color('primary')
-                    ->searchable()
-                    ->sortable()->alignCenter(),
+                Tables\Columns\TextColumn::make('quantity')
+                    ->numeric()
+                    ->sortable()
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('date_of_manufacture')
+                    ->date()
+                    ->sortable()
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('date_of_expiry')
+                    ->date()
+                    ->sortable()
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('base_price')
+                    ->numeric()
+                    ->sortable()
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('display_price')
+                    ->numeric()
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\ToggleColumn::make('status')
                     ->label('Make Visible ?')
@@ -98,8 +127,8 @@ class SubCategoryResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('Y-m-d h:i:s A')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -130,10 +159,10 @@ class SubCategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSubCategories::route('/'),
-            'create' => Pages\CreateSubCategory::route('/create'),
-            'view' => Pages\ViewSubCategory::route('/{record}'),
-            'edit' => Pages\EditSubCategory::route('/{record}/edit'),
+            'index' => Pages\ListProducts::route('/'),
+            'create' => Pages\CreateProduct::route('/create'),
+            'view' => Pages\ViewProduct::route('/{record}'),
+            'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
 }

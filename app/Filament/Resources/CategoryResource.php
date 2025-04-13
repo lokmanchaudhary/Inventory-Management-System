@@ -17,8 +17,9 @@ use Illuminate\Support\Str;
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder';
+    protected static ?string $navigationGroup = 'Products Management';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -44,7 +45,7 @@ class CategoryResource extends Resource
                             ->unique(Category::class, 'slug', fn ($record) => $record, ignoreRecord: true),
 
                         Forms\Components\Toggle::make('status')
-                            ->label('Visible to customers.')
+                            ->label('Make Visible ?')
                             ->default(true)
                             ->onColor('success')
                             ->offColor('danger'),
