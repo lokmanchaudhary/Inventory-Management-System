@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DamagedProductResource\Pages;
 use App\Filament\Resources\DamagedProductResource\RelationManagers;
+use App\Enums\DamagedProductStatus;
 use App\Models\DamagedProduct;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -28,44 +29,55 @@ class DamagedProductResource extends Resource
                 Forms\Components\Select::make('product_id')
                     ->relationship('product', 'title')
                     ->searchable()
+                    ->preload()
                     ->required(),
 
                 Forms\Components\TextInput::make('damaged_quantity')
                     ->numeric()
                     ->required()
-                    ->minValue(1),
+                    ->minValue(1)
+                    ->reactive(),
 
                 Forms\Components\TextInput::make('refundable_quantity')
                     ->numeric()
-                    ->minValue(0),
+                    ->minValue(0)
+                    ->reactive()
+                    ->afterStateUpdated(function (callable $set, callable $get) {
+                        $set('non_exchangeable_non_refundable_quantity',
+                            max(0, ($get('damaged_quantity') ?? 0) - ($get('refundable_quantity') ?? 0) - ($get('exchangeable_quantity') ?? 0))
+                        );
+                    }),
 
                 Forms\Components\TextInput::make('exchangeable_quantity')
                     ->numeric()
-                    ->minValue(0),
+                    ->minValue(0)
+                    ->reactive()
+                    ->afterStateUpdated(function (callable $set, callable $get) {
+                        $set('non_exchangeable_non_refundable_quantity',
+                            max(0, ($get('damaged_quantity') ?? 0) - ($get('refundable_quantity') ?? 0) - ($get('exchangeable_quantity') ?? 0))
+                        );
+                    }),
 
                 Forms\Components\TextInput::make('non_exchangeable_non_refundable_quantity')
                     ->numeric()
+                    ->disabled()
+                    ->dehydrated()
                     ->minValue(0),
 
-                Forms\Components\TextInput::make('refunded_amount')
-                    ->numeric()
-                    ->minValue(0)
-                    ->prefix('रु')
-                    ->nullable(),
-
-                Forms\Components\TextInput::make('exchanged_value')
+                Forms\Components\TextInput::make('damaged_value')
                     ->numeric()
                     ->minValue(0)
                     ->prefix('रु')
                     ->nullable(),
 
                 Forms\Components\Select::make('status')
+                    ->required()
                     ->options([
-                        'pending' => 'Pending',
-                        'refunded' => 'Refunded',
-                        'exchanged' => 'Exchanged',
+                        DamagedProductStatus::PENDING->value => 'Pending',
+                        DamagedProductStatus::REFUNDED->value => 'Refunded',
+                        DamagedProductStatus::EXCHANGED->value => 'Exchanged',
                     ])
-                    ->required(),
+                    ->default(DamagedProductStatus::PENDING->value),
 
                 Forms\Components\Textarea::make('remarks')
                     ->rows(3)
@@ -93,17 +105,18 @@ class DamagedProductResource extends Resource
                 Tables\Columns\TextColumn::make('non_exchangeable_non_refundable_quantity')
                     ->alignCenter()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('refunded_amount')
+                Tables\Columns\TextColumn::make('damaged_value')
                     ->money('NPR')
                     ->alignCenter()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('exchanged_value')
+
+                Tables\Columns\SelectColumn::make('status')
                     ->alignCenter()
-                    ->money('NPR')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->alignCenter()
-                    ->badge()
+                    ->options([
+                        DamagedProductStatus::PENDING->value => 'Pending',
+                        DamagedProductStatus::REFUNDED->value => 'Refunded',
+                        DamagedProductStatus::EXCHANGED->value => 'Exchanged',
+                    ])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

@@ -28,9 +28,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductExchange::class, 'exchanged_product_id');
     }
-    public function profit(): HasOne
-    {
-        return $this->hasOne(ProfitReport::class, 'product_id');
-    }
+//    public function profit(): HasOne
+//    {
+//        return $this->hasOne(ProfitReport::class, 'product_id');
+//    }
 
 }

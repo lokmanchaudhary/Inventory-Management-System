@@ -7,20 +7,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('product_exchanges', function (Blueprint $table) {
+        Schema::create('sales_performance_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->decimal('total_sales', 10, 2)->default(0);
             $table->decimal('total_refunded', 10, 2)->default(0);
             $table->decimal('total_exchanged_value', 10, 2)->default(0);
             $table->decimal('non_refundable_loss', 10, 2)->default(0);
-            $table->decimal('total_profit', 10, 2)->default(0);
+            $table->decimal('net_profit', 10, 2)->default(0);
+            $table->date('report_date');
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('product_exchanges');
+        Schema::dropIfExists('sales_performance_reports');
     }
 };

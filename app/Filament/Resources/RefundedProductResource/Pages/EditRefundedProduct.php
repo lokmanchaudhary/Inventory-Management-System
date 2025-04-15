@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ProfitReportResource\Pages;
+namespace App\Filament\Resources\RefundedProductResource\Pages;
 
-use App\Filament\Resources\ProfitReportResource;
+use App\Filament\Resources\RefundedProductResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditProfitReport extends EditRecord
+class EditRefundedProduct extends EditRecord
 {
-    protected static string $resource = ProfitReportResource::class;
+    protected static string $resource = RefundedProductResource::class;
 
     protected function getHeaderActions(): array
     {

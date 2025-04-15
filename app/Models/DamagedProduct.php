@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DamagedProductStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -14,19 +15,22 @@ class DamagedProduct extends Model
         "refundable_quantity",
         "exchangeable_quantity",
         "non_exchangeable_non_refundable_quantity",
-        "refunded_amount",
-        "exchanged_value",
+        "damaged_value",
         "status",
         "remarks",
     ];
+
+   protected $casts = [
+        'status' => DamagedProductStatus::class
+   ];
 
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function exchanges(): HasMany
+    public function productExchanges(): BelongsTo
     {
-        return $this->hasMany(ProductExchange::class);
+        return $this->belongsTo(ProductExchange::class);
     }
 }

@@ -25,27 +25,31 @@ class ProductExchangeResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('product_id')
+                    ->label('Product')
+                    ->relationship('Product', 'title')
+                    ->preload()
+                    ->required(),
+
                 Forms\Components\Select::make('damaged_product_id')
+                    ->required()
+                    ->relationship('damagedProducts', 'id')
                     ->label('Damaged Product')
-                    ->relationship('damagedProduct', 'id')
+                    ->preload()
+                    ->searchable(),
+
+                Forms\Components\TextInput::make('quantity_exchanged')
+                    ->label('Exchanged Quantity')
+                    ->numeric()
                     ->required(),
 
-                Forms\Components\Select::make('exchanged_product_id')
-                    ->label('Exchanged With')
-                    ->relationship('exchangedProduct', 'title')
-                    ->searchable()
-                    ->required(),
-
-                Forms\Components\TextInput::make('quantity')
+                Forms\Components\TextInput::make('exchanged_value')
                     ->required()
                     ->numeric()
-                    ->minValue(1),
+                    ->minValue(0),
 
-                Forms\Components\TextInput::make('value')
-                    ->required()
-                    ->numeric()
-                    ->minValue(0)
-                    ->prefix('रु'),
+                Forms\Components\TextInput::make('reason')
+                ,
             ]);
     }
 
@@ -53,18 +57,18 @@ class ProductExchangeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('damagedProduct.product.title')
+                Tables\Columns\TextColumn::make('product.title')
                     ->label('Damaged Product')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('exchangedProduct.title')
-                    ->label('Exchanged Product')
+                Tables\Columns\TextColumn::make('damagedProduct.title')
+                    ->label('Damaged Product')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('quantity')
+                Tables\Columns\TextColumn::make('quantity_exchanged')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('value')
+                Tables\Columns\TextColumn::make('exchanged_value')
                     ->money('NPR')
                     ->sortable(),
 
