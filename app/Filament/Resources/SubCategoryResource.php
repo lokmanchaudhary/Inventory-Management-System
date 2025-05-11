@@ -33,9 +33,6 @@ class SubCategoryResource extends Resource
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
 
                 Forms\Components\TextInput::make('slug')
-                    ->hint('URL resource')
-                    ->hintIcon('heroicon-o-globe-alt')
-                    ->hintColor('secondary')
                     ->required()
                     ->lazy()
                     ->rule('regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/')
@@ -43,7 +40,7 @@ class SubCategoryResource extends Resource
                     ->unique(SubCategory::class, 'slug', fn ($record) => $record, ignoreRecord: true),
 
                 Forms\Components\Select::make('category_id')
-                    ->label('Parent Category')
+                    ->label('Category')
                     ->relationship('category', 'title', function ($query) {
                         $query->orderBy('sequence', 'asc');
                     })

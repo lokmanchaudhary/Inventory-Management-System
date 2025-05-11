@@ -18,6 +18,8 @@ class AdminResource extends Resource
     protected static ?string $model = Admin::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'User Management';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -32,9 +34,10 @@ class AdminResource extends Resource
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->minLength(8)
+                    ->required(fn (string $context): bool => $context === 'create')
+                    ->maxLength(16),
             ]);
     }
 

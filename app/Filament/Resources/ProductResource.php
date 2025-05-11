@@ -70,7 +70,8 @@ class ProductResource extends Resource
                     ->label('Visible to customers.')
                     ->default(true)
                     ->onColor('success')
-                    ->offColor('danger'),
+                    ->offColor('danger')
+                    ->columnSpanFull(),
             ]);
     }
 

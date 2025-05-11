@@ -33,7 +33,7 @@ class ProductExchangeResource extends Resource
 
                 Forms\Components\Select::make('damaged_product_id')
                     ->required()
-                    ->relationship('damagedProducts', 'id')
+                    ->relationship('damagedProduct', 'id')
                     ->label('Damaged Product')
                     ->preload()
                     ->searchable(),

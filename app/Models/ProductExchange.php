@@ -10,11 +10,10 @@ class ProductExchange extends Model
 {
     protected $fillable = [
         "product_id",
-        "total_sales",
-        "total_refunded",
-        "total_exchanged_value",
-        "non_refundable_loss",
-        "net_profit",
+        "quantity_exchanged",
+        "exchanged_value",
+        "damaged_product_id",
+        "reason",
     ];
 
     public function product(): BelongsTo
@@ -22,7 +21,7 @@ class ProductExchange extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function damagedProducts(): BelongsTo
+    public function damagedProduct(): BelongsTo
     {
         return $this->belongsTo(DamagedProduct::class);
     }

@@ -18,7 +18,7 @@ class SalesPerformanceReportResource extends Resource
     protected static ?string $model = SalesPerformanceReport::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
-    protected static ?string $navigationGroup = 'Reports';
+    protected static ?string $navigationGroup = 'Reports Management';
     protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form
