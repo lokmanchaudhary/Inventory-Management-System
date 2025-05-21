@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SubCategoryResource\Pages;
 use App\Filament\Resources\SubCategoryResource\RelationManagers;
+use App\Models\Category;
 use App\Models\SubCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -42,7 +43,8 @@ class SubCategoryResource extends Resource
                 Forms\Components\Select::make('category_id')
                     ->label('Category')
                     ->relationship('category', 'title', function ($query) {
-                        $query->orderBy('sequence', 'asc');
+                        $query->where('status', true)
+                            ->orderBy('sequence', 'asc');
                     })
                     ->preload()
                     ->allowHtml()

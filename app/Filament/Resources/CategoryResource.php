@@ -35,9 +35,6 @@ class CategoryResource extends Resource
                             ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
 
                         Forms\Components\TextInput::make('slug')
-                            ->hint('URL resource')
-                            ->hintIcon('heroicon-o-globe-alt')
-                            ->hintColor('secondary')
                             ->required()
                             ->lazy()
                             ->rule('regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/')

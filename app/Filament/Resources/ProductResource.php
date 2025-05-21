@@ -26,7 +26,7 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->label('SubCategory Title')
+                    ->label('Product Title')
                     ->required()
                     ->maxLength(255)
                     ->lazy()
@@ -34,9 +34,6 @@ class ProductResource extends Resource
 
                 Forms\Components\TextInput::make('slug')
                     ->required()
-                    ->hint('URL resource')
-                    ->hintIcon('heroicon-o-globe-alt')
-                    ->hintColor('secondary')
                     ->lazy()
                     ->rule('regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/')
                     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state)))
@@ -48,10 +45,12 @@ class ProductResource extends Resource
                     ->numeric(),
 
                 Forms\Components\DatePicker::make('date_of_manufacture')
-                    ->required(),
+                    ->required()
+                    ->maxDate(now()),
 
                 Forms\Components\DatePicker::make('date_of_expiry')
-                    ->required(),
+                    ->required()
+                    ->after('date_of_manufacture'),
 
                 Forms\Components\TextInput::make('base_price')
                     ->required()
