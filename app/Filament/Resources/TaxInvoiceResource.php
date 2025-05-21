@@ -25,60 +25,89 @@ class TaxInvoiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('seller_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('invoice_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('invoice_date'),
-                Forms\Components\TextInput::make('payment_type')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('product_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('hs_code')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('unit'),
-                Forms\Components\TextInput::make('pack')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('pcs')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
-                Forms\Components\TextInput::make('discount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('type')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('amount')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('total_pack_quantity')
-                    ->numeric()
-                    ->default(null),
-                Forms\Components\TextInput::make('sub_total')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('discount_total')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('ebf_vat_amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('vat')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('net_total')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make('Seller & Invoice Info')
+                    ->schema([
+                        Forms\Components\TextInput::make('seller_id')
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('invoice_number')
+                            ->required()
+                            ->maxLength(255),
+
+                        Forms\Components\DatePicker::make('invoice_date')
+                            ->required()
+                            ->maxDate(now()),
+
+                        Forms\Components\TextInput::make('payment_type')
+                            ->maxLength(255)
+                            ->default(null),
+                    ]),
+
+                Forms\Components\Section::make('Product Details')
+                    ->schema([
+                        Forms\Components\TextInput::make('product_name')
+                            ->required()
+                            ->maxLength(255),
+
+                        Forms\Components\TextInput::make('hs_code')
+                            ->maxLength(255)
+                            ->default(null),
+
+                        Forms\Components\TextInput::make('unit'),
+
+                        Forms\Components\TextInput::make('pack')
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('pcs')
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('price')
+                            ->required()
+                            ->numeric()
+                            ->prefix('$'),
+
+                        Forms\Components\TextInput::make('discount')
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('type')
+                            ->maxLength(255)
+                            ->default(null),
+                    ]),
+
+                Forms\Components\Section::make('Totals & Summary')
+                    ->schema([
+                        Forms\Components\TextInput::make('amount')
+                            ->numeric()
+                            ->default(null),
+
+                        Forms\Components\TextInput::make('total_pack_quantity')
+                            ->numeric()
+                            ->default(null),
+
+                        Forms\Components\TextInput::make('sub_total')
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('discount_total')
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('ebf_vat_amount')
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('vat')
+                            ->required()
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('net_total')
+                            ->required()
+                            ->numeric(),
+                    ]),
             ]);
     }
 
