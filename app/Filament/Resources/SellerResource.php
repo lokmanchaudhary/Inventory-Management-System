@@ -36,6 +36,7 @@ class SellerResource extends Resource
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\TextInput::make('phone')
+                    ->numeric()
                     ->tel()
                     ->required()
                     ->maxLength(255),
@@ -62,12 +63,15 @@ class SellerResource extends Resource
                     ->searchable()
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->icon('heroicon-o-phone')
+                    ->badge()
                     ->searchable()
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('pan_no')
+                    ->badge()
                     ->searchable()
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('created_at')
