@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Product\PackagingType;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
@@ -44,6 +45,29 @@ class ProductResource extends Resource
                     ->minValue(0)
                     ->numeric(),
 
+                Forms\Components\Select::make('packaging_type')
+                    ->label('Packaging Type')
+                    ->required()
+                    ->options([
+                        PackagingType::BOX->value => 'Box',
+                        PackagingType::BUNDLE->value => 'Bundle',
+                        PackagingType::STRIPE->value => 'Stripe',
+                        PackagingType::PACKET->value => 'Packet',
+                        PackagingType::BOTTLE->value => 'Bottle',
+                        PackagingType::CAN->value => 'Can',
+                        PackagingType::JAR->value => 'Jar',
+                        PackagingType::POUCH->value => 'Pouch',
+                        PackagingType::TUBE->value => 'Tube',
+                        PackagingType::ROLL->value => 'Roll',
+                        PackagingType::SACHET->value => 'Sachet',
+                        PackagingType::CRATE->value => 'Crate',
+                        PackagingType::TRAY->value => 'Tray',
+                        PackagingType::CARTON->value => 'Carton',
+                        PackagingType::LOOSE->value => 'Loose',
+                    ])
+                    ->default(PackagingType::BOX->value),
+
+
                 Forms\Components\DatePicker::make('date_of_manufacture')
                     ->required()
                     ->maxDate(now()),
@@ -84,11 +108,18 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable()
+                    ->badge()
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('quantity')
                     ->numeric()
                     ->sortable()
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('packaging_type')
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(fn (PackagingType $state) => $state->label())
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('date_of_manufacture')
@@ -98,6 +129,7 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('date_of_expiry')
                     ->date()
+                    ->badge()
                     ->sortable()
                     ->alignCenter(),
 

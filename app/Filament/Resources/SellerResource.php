@@ -39,7 +39,8 @@ class SellerResource extends Resource
                     ->numeric()
                     ->tel()
                     ->required()
-                    ->maxLength(255),
+                    ->minLength(10)
+                    ->maxLength(10),
                 Forms\Components\TextInput::make('address')
                     ->required()
                     ->maxLength(255),
