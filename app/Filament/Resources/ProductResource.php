@@ -169,9 +169,9 @@ class ProductResource extends Resource
                 Tables\Actions\ViewAction::make()->label('Show'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make()
-                        ->label('Edit Sub Category'),
+                        ->label('Edit Product'),
                     Tables\Actions\DeleteAction::make()
-                        ->label('Delete Sub Category'),
+                        ->label('Delete Product'),
                 ]),
             ])
             ->bulkActions([

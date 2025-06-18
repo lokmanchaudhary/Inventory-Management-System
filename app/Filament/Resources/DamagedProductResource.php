@@ -134,7 +134,7 @@ class DamagedProductResource extends Resource
                 Tables\Actions\ViewAction::make()->label('Show'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make()
-                        ->label('Edit Sub Category'),
+                        ->label('Edit Damaged Product'),
                     Tables\Actions\DeleteAction::make()
                         ->label('Delete Sub Category'),
                 ]),

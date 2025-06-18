@@ -58,25 +58,31 @@ class ProductExchangeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('product.title')
+                    ->alignCenter()
                     ->label('Damaged Product')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('damagedProduct.title')
+                    ->alignCenter()
                     ->label('Damaged Product')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('quantity_exchanged')
+                    ->alignCenter()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('exchanged_value')
+                    ->alignCenter()
                     ->money('NPR')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
+                    ->alignCenter()
                     ->dateTime('Y-m-d h:i A')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->alignCenter()
                     ->dateTime('Y-m-d h:i:s A')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)->alignCenter(),
@@ -88,9 +94,9 @@ class ProductExchangeResource extends Resource
                 Tables\Actions\ViewAction::make()->label('Show'),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make()
-                        ->label('Edit Sub Category'),
+                        ->label('Edit Exchanged Product'),
                     Tables\Actions\DeleteAction::make()
-                        ->label('Delete Sub Category'),
+                        ->label('Delete Exchanged Product'),
                 ]),
             ])
             ->bulkActions([

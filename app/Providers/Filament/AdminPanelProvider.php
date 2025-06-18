@@ -26,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName('Mainapokhari General Store')
+            ->brandName('Inventory Management System')
             ->login()
             ->authGuard('admin')
             ->colors([
